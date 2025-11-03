@@ -2,24 +2,22 @@
   --paper: #fdfcf8;
   --ink: #1f2937;
   --muted: #6b7280;
-  --accent1: #b8860b;
-  --accent2: #8b5e3b;
 }
 
-/* Hintergrund – Bild bleibt vollständig sichtbar auf allen Geräten */
+/* ===== Hintergrund ===== */
 html, body { height: 100%; }
 body{
   margin: 0;
+  /* Desktop/Laptop: füllt den Screen ohne Balken */
   background:
     linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
-    url("Blick vom Resolute Desk.png") center / contain no-repeat fixed;
-  background-color: #000; /* falls Ränder entstehen */
+    url("Blick vom Resolute Desk.png") center bottom / cover no-repeat fixed;
   color: #fff;
   font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
-  display: grid;
-  place-items: center;
+  display: grid; place-items: center;
 }
 
+/* ===== Layout ===== */
 .app { width: min(820px, 100%); padding: 24px; }
 header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px; }
 .title { font-size: clamp(18px, 4vw, 28px); font-weight: 800; letter-spacing: .3px; }
@@ -27,11 +25,11 @@ header { display:flex; align-items:center; justify-content:space-between; margin
 
 .board{
   position: relative;
-  height: min(70vh, 640px);
-  min-height: 520px;
+  height: clamp(480px, 70vh, 640px);
   perspective: 1000px;
 }
 
+/* ===== Karte (Papier) ===== */
 .card{
   position: absolute; inset: 0; margin: 0 auto;
   width: min(600px, 92%); height: 100%;
@@ -39,9 +37,7 @@ header { display:flex; align-items:center; justify-content:space-between; margin
   color: var(--ink);
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 10px;
-  box-shadow:
-    0 14px 28px rgba(0,0,0,.24),
-    0 3px 6px rgba(0,0,0,.16);
+  box-shadow: 0 14px 28px rgba(0,0,0,.24), 0 3px 6px rgba(0,0,0,.16);
   display: grid; grid-template-rows: auto 1fr auto; padding: 20px; gap: 12px;
   user-select: none; touch-action: pan-y;
   transform-origin: 50% 110%;
@@ -52,19 +48,10 @@ header { display:flex; align-items:center; justify-content:space-between; margin
     linear-gradient(transparent 24px, rgba(0,0,0,.03) 25px);
   background-size: 4px 4px, 100% 25px;
 }
-
-.card.fly-in{
-  animation: dropIn .28s ease-out both;
-}
+.card.fly-in{ animation: dropIn .28s ease-out both; }
 @keyframes dropIn{
-  0%{
-    transform: translateY(-24px) rotate(var(--tilt, 0deg)) scale(.98);
-    opacity: 0;
-  }
-  100%{
-    transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1);
-    opacity: 1;
-  }
+  0%{ transform: translateY(-24px) rotate(var(--tilt, 0deg)) scale(.98); opacity: 0; }
+  100%{ transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1); opacity: 1; }
 }
 
 .card.above { z-index: 5; }
@@ -85,8 +72,6 @@ header { display:flex; align-items:center; justify-content:space-between; margin
 }
 .btn:hover{ background: #f7f7f7; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
 .btn:active{ transform: translateY(1px) scale(.99); }
-
-/* beide Buttons: roter Rahmen */
 .btn-left, .btn-right{ outline: 2px solid rgba(239,68,68,.28); }
 
 .badge{
@@ -120,4 +105,24 @@ header { display:flex; align-items:center; justify-content:space-between; margin
 .pill{
   display:inline-block; margin: 6px; padding: 6px 10px; border-radius: 999px;
   border:1px solid rgba(0,0,0,.08); font-size:12px; color: var(--muted); background:#fff;
+}
+
+/* ===== Mobile-Anpassungen ===== */
+@media (max-width: 768px){
+  /* Auf Mobile: Bild vollständig zeigen + kein fixed (fixiert zoombugt) */
+  body{
+    background:
+      linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+      url("Blick vom Resolute Desk.png") center / contain no-repeat;
+    background-color: #000;
+    background-attachment: scroll;
+  }
+  .board{
+    height: 78vh;           /* mehr Platz vertikal */
+  }
+  .card{
+    width: 92%;
+    padding: 16px;
+  }
+  .prompt{ font-size: 18px; }
 }
