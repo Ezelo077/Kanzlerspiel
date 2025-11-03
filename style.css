@@ -1,20 +1,24 @@
 :root {
-  --bg: #0f172a;         
-  --card: #111827;       
-  --muted: #94a3b8;      
-  --text: #e5e7eb;       
-  --accent: #22d3ee;     
-  --good: #22c55e;       
-  --bad: #ef4444;        
+  /* Tinder-nahe Palette */
+  --bg1: #fd297b;       /* Pink */
+  --bg2: #ff7854;       /* Orange */
+  --card: #ffffff;      /* weißes Card-UI */
+  --text: #1f2937;      /* dunkler Text auf Karten */
+  --muted: #6b7280;     /* gedeckter Text */
+  --like: #2dd36f;      /* Grün (LIKE) */
+  --nope: #fd297b;      /* Pink/Rot (NOPE) */
+  --super: #3db2ff;     /* Blau (optional Superlike) */
+  --accent: #ff5864;    /* Verlauf/Progress */
 }
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 
+/* Hintergrund wie Tinder-Verlauf */
 body {
   margin: 0;
-  background: radial-gradient(1200px 600px at 20% -20%, #1e293b 0%, var(--bg) 60%);
-  color: var(--text);
+  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+  color: #fff; /* globale Schrift auf dem Hintergrund */
   font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
   display: grid;
   place-items: center;
@@ -23,16 +27,18 @@ body {
 .app { width: min(780px, 100%); padding: 24px; }
 header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px; }
 .title { font-size: clamp(18px, 4vw, 28px); font-weight: 700; letter-spacing: .3px; }
-.subtitle { color: var(--muted); font-size: 13px; }
+.subtitle { color: rgba(255,255,255,.85); font-size: 13px; }
 
-.board { position: relative; height: min(70vh, 640px); min-height: 440px; }
+.board { position: relative; height: min(70vh, 640px); min-height: 460px; }
 
+/* Karte: weiß, mit dunklem Text */
 .card {
   position: absolute; inset: 0; margin: 0 auto; width: min(560px, 92%); height: 100%;
-  background: linear-gradient(180deg, #0b1220, #0a0f1a 40%, #0b1220), var(--card);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 24px;
-  box-shadow: 0 30px 60px rgba(0,0,0,.35);
+  background: var(--card);
+  color: var(--text);
+  border: none;
+  border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: 22px;
@@ -44,76 +50,70 @@ header { display:flex; align-items:center; justify-content:space-between; margin
   transition: transform .25s ease, opacity .25s ease, box-shadow .2s ease;
 }
 .card.above { z-index: 5; }
-.card.below { z-index: 4; filter: saturate(.9); }
-.card.far { z-index: 3; filter: saturate(.8); }
+.card.below { z-index: 4; filter: saturate(.96); }
+.card.far   { z-index: 3; filter: saturate(.88); }
 
-.prompt { font-size: clamp(18px, 2.8vw, 22px); font-weight: 600; }
+.prompt { font-size: clamp(18px, 2.8vw, 22px); font-weight: 700; }
 .meta { color: var(--muted); font-size: 14px; }
 
+/* Buttons unten */
 .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-self: end; }
 .btn {
-  background: #0b1220;
+  background: #fff;
   color: var(--text);
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(0,0,0,.08);
   padding: 14px 16px;
-  border-radius: 16px;
-  font-weight: 600;
+  border-radius: 14px;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform .08s ease, background .2s ease, border-color .2s ease;
+  transition: transform .08s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
   text-align:center;
 }
-.btn:hover { background: #0f172a; }
+.btn:hover { background: #fafafa; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
 .btn:active { transform: translateY(1px) scale(.99); }
-.btn-left { outline: 2px solid rgba(239,68,68,.18); }
-.btn-right { outline: 2px solid rgba(34,211,238,.18); }
+.btn-left  { outline: 2px solid rgba(253,41,123,.25); }
+.btn-right { outline: 2px solid rgba(45,211,111,.25); }
 
+/* Stempel/Badges wie LIKE/NOPE */
 .badge {
   position: absolute;
   top: 14px;
   padding: 6px 10px;
   font-size: 12px;
   border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: .4px;
-}
-.badge.left {
-  left: 14px;
-  background: rgba(239,68,68,.14);
-  border: 1px solid rgba(239,68,68,.35);
-  color: #fecaca;
+  font-weight: 900;
+  letter-spacing: .6px;
+  text-transform: uppercase;
   opacity: 0;
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.05);
+  transition: opacity .15s ease;
 }
-.badge.right {
-  right: 14px;
-  background: rgba(34,211,238,.14);
-  border: 1px solid rgba(34,211,238,.35);
-  color: #a5f3fc;
-  opacity: 0;
-  transform: translateY(-6px);
-}
+.badge.left  { left: 14px;  background: rgba(253,41,123,.12); border: 1px solid rgba(253,41,123,.5); color: #b1004a; }
+.badge.right { right: 14px; background: rgba(45,211,111,.12);  border: 1px solid rgba(45,211,111,.5);  color: #0d7a3b; }
 
+/* Fortschrittsleiste */
 .progress {
   height: 6px;
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.25);
   border-radius: 999px;
   overflow: hidden;
 }
 .bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  background: linear-gradient(90deg, var(--accent), var(--like));
   transition: width .25s ease;
 }
 
+/* Toast */
 .toast {
   position: fixed;
   left: 50%;
   bottom: 24px;
   transform: translateX(-50%) translateY(20px);
-  background: #0b1220;
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,.1);
+  background: #111827;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.12);
   padding: 12px 16px;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,.35);
@@ -124,21 +124,21 @@ header { display:flex; align-items:center; justify-content:space-between; margin
   max-width: 92vw;
   text-align: center;
 }
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-.end { display: grid; place-items: center; gap: 8px; text-align: center; }
+/* Endscreen */
+.end { display: grid; place-items: center; gap: 8px; text-align: center; color: var(--text); }
 .end h2 { margin: 8px 0 0; font-size: clamp(20px, 4vw, 28px); }
 .end p { color: var(--muted); margin: 0 0 16px; }
 
+/* Tags/Chips */
 .pill {
   display:inline-block;
   margin: 6px;
   padding: 6px 10px;
   border-radius: 999px;
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(0,0,0,.08);
   font-size:12px;
   color: var(--muted);
+  background: #fff;
 }
