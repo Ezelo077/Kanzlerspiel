@@ -1,144 +1,130 @@
-:root {
-  /* Tinder-nahe Palette */
-  --bg1: #fd297b;       /* Pink */
-  --bg2: #ff7854;       /* Orange */
-  --card: #ffffff;      /* weißes Card-UI */
-  --text: #1f2937;      /* dunkler Text auf Karten */
-  --muted: #6b7280;     /* gedeckter Text */
-  --like: #2dd36f;      /* Grün (LIKE) */
-  --nope: #fd297b;      /* Pink/Rot (NOPE) */
-  --super: #3db2ff;     /* Blau (optional Superlike) */
-  --accent: #ff5864;    /* Verlauf/Progress */
+:root{
+  --paper: #fdfcf8;        /* Papierfarbe */
+  --ink: #1f2937;          /* Text auf Papier */
+  --muted: #6b7280;        /* sekundärer Text */
+  --accent1: #b8860b;      /* goldiger Akzent für Office-Look */
+  --accent2: #8b5e3b;      /* warmes Braun */
 }
 
-* { box-sizing: border-box; }
+/* Hintergrund: dein Foto, leicht abgedunkelt für Lesbarkeit */
 html, body { height: 100%; }
-
-/* Hintergrund wie Tinder-Verlauf */
-body {
+body{
   margin: 0;
-  background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
-  color: #fff; /* globale Schrift auf dem Hintergrund */
+  background:
+    linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+    url("Blick vom Resolute Desk.png") center bottom / cover no-repeat fixed;
+  color: #fff;
   font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
-  display: grid;
-  place-items: center;
+  display: grid; place-items: center;
 }
 
-.app { width: min(780px, 100%); padding: 24px; }
+.app { width: min(820px, 100%); padding: 24px; }
 header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px; }
-.title { font-size: clamp(18px, 4vw, 28px); font-weight: 700; letter-spacing: .3px; }
+.title { font-size: clamp(18px, 4vw, 28px); font-weight: 800; letter-spacing: .3px; }
 .subtitle { color: rgba(255,255,255,.85); font-size: 13px; }
 
-.board { position: relative; height: min(70vh, 640px); min-height: 460px; }
-
-/* Karte: weiß, mit dunklem Text */
-.card {
-  position: absolute; inset: 0; margin: 0 auto; width: min(560px, 92%); height: 100%;
-  background: var(--card);
-  color: var(--text);
-  border: none;
-  border-radius: 22px;
-  box-shadow: 0 18px 40px rgba(0,0,0,.35);
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  padding: 22px;
-  gap: 12px;
-  user-select: none;
-  touch-action: pan-y;
-  transform-origin: 50% 110%;
-  transform: translate3d(0,0,0);
-  transition: transform .25s ease, opacity .25s ease, box-shadow .2s ease;
+/* Board mit Perspektive, damit die Zettel „auf dem Tisch“ wirken */
+.board{
+  position: relative;
+  height: min(70vh, 640px);
+  min-height: 520px;
+  perspective: 1000px;
 }
-.card.above { z-index: 5; }
-.card.below { z-index: 4; filter: saturate(.96); }
-.card.far   { z-index: 3; filter: saturate(.88); }
 
-.prompt { font-size: clamp(18px, 2.8vw, 22px); font-weight: 700; }
+/* Papierkarte */
+.card{
+  position: absolute; inset: 0; margin: 0 auto;
+  width: min(600px, 92%); height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 10px;
+  box-shadow:
+    0 14px 28px rgba(0,0,0,.24),
+    0 3px 6px rgba(0,0,0,.16);
+  display: grid; grid-template-rows: auto 1fr auto; padding: 20px; gap: 12px;
+  user-select: none; touch-action: pan-y;
+  transform-origin: 50% 110%;
+  transform: translate3d(0,0,0) rotate(var(--tilt, 0deg));
+  transition: transform .25s ease, opacity .25s ease, box-shadow .2s ease;
+  /* dezente Papierstruktur */
+  background-image:
+    radial-gradient(rgba(0,0,0,.02) 1px, transparent 1px),
+    linear-gradient(transparent 24px, rgba(0,0,0,.03) 25px);
+  background-size: 4px 4px, 100% 25px;
+}
+
+/* Zettel fliegt rein */
+.card.fly-in{
+  animation: dropIn .28s ease-out both;
+}
+@keyframes dropIn{
+  0%{
+    transform: translateY(-24px) rotate(var(--tilt, 0deg)) scale(.98);
+    opacity: 0;
+  }
+  100%{
+    transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1);
+    opacity: 1;
+  }
+}
+
+.card.above { z-index: 5; }
+.card.below { z-index: 4; filter: saturate(.96); transform: translateY(6px) rotate(calc(var(--tilt, 0deg) - .5deg)); }
+.card.far   { z-index: 3; filter: saturate(.88); transform: translateY(10px) rotate(calc(var(--tilt, 0deg) + .5deg)); }
+
+.prompt { font-size: clamp(18px, 2.8vw, 22px); font-weight: 800; }
 .meta { color: var(--muted); font-size: 14px; }
 
-/* Buttons unten */
 .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-self: end; }
-.btn {
-  background: #fff;
-  color: var(--text);
-  border: 1px solid rgba(0,0,0,.08);
-  padding: 14px 16px;
-  border-radius: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform .08s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+.btn{
+  background: #fff; color: #111;
+  border: 1px solid rgba(0,0,0,.15);
+  padding: 12px 16px; border-radius: 10px;
+  font-weight: 800; cursor: pointer;
+  transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
   text-align:center;
 }
-.btn:hover { background: #fafafa; box-shadow: 0 6px 16px rgba(0,0,0,.08); }
-.btn:active { transform: translateY(1px) scale(.99); }
-.btn-left  { outline: 2px solid rgba(253,41,123,.25); }
-.btn-right { outline: 2px solid rgba(45,211,111,.25); }
+.btn:hover{ background: #f7f7f7; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+.btn:active{ transform: translateY(1px) scale(.99); }
 
-/* Stempel/Badges wie LIKE/NOPE */
-.badge {
-  position: absolute;
-  top: 14px;
-  padding: 6px 10px;
-  font-size: 12px;
-  border-radius: 999px;
-  font-weight: 900;
-  letter-spacing: .6px;
-  text-transform: uppercase;
-  opacity: 0;
-  transform: translateY(-6px) scale(1.05);
-  transition: opacity .15s ease;
-}
-.badge.left  { left: 14px;  background: rgba(253,41,123,.12); border: 1px solid rgba(253,41,123,.5); color: #b1004a; }
-.badge.right { right: 14px; background: rgba(45,211,111,.12);  border: 1px solid rgba(45,211,111,.5);  color: #0d7a3b; }
+/* Beide Antworten: roter Outline-Rahmen */
+.btn-left, .btn-right{ outline: 2px solid rgba(239,68,68,.28); }
 
-/* Fortschrittsleiste */
-.progress {
-  height: 6px;
-  background: rgba(255,255,255,.25);
-  border-radius: 999px;
-  overflow: hidden;
+/* kleine Badge-Etiketten */
+.badge{
+  position: absolute; top: 10px;
+  padding: 6px 10px; font-size: 11px; border-radius: 999px;
+  font-weight: 900; letter-spacing: .5px; text-transform: uppercase;
+  opacity: 0; transform: translateY(-6px); transition: opacity .15s ease;
+  background: rgba(0,0,0,.06); border: 1px solid rgba(0,0,0,.12); color: #9b1c1c;
 }
-.bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--like));
-  transition: width .25s ease;
-}
+.badge.left{ left: 10px; }
+.badge.right{ right: 10px; }
+
+/* Fortschritt */
+.progress{ height: 6px; background: rgba(255,255,255,.35); border-radius: 999px; overflow: hidden; }
+.bar{ height: 100%; width: 0%; background: linear-gradient(90deg, #ff5864, #ff9a56); transition: width .25s ease; }
 
 /* Toast */
-.toast {
-  position: fixed;
-  left: 50%;
-  bottom: 24px;
-  transform: translateX(-50%) translateY(20px);
-  background: #111827;
-  color: #fff;
+.toast{
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
+  background: rgba(17,24,39,.9); color: #fff;
   border: 1px solid rgba(255,255,255,.12);
-  padding: 12px 16px;
-  border-radius: 12px;
+  padding: 12px 16px; border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0,0,0,.35);
-  font-size: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
-  max-width: 92vw;
-  text-align: center;
+  font-size: 14px; opacity: 0; pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease; max-width: 92vw; text-align: center;
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.show{ opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* Endscreen */
-.end { display: grid; place-items: center; gap: 8px; text-align: center; color: var(--text); }
-.end h2 { margin: 8px 0 0; font-size: clamp(20px, 4vw, 28px); }
-.end p { color: var(--muted); margin: 0 0 16px; }
+.end{ display: grid; place-items: center; gap: 8px; text-align: center; color: var(--ink); }
+.end h2{ margin: 8px 0 0; font-size: clamp(20px, 4vw, 28px); }
+.end p{ color: var(--muted); margin: 0 0 16px; }
 
-/* Tags/Chips */
-.pill {
-  display:inline-block;
-  margin: 6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border:1px solid rgba(0,0,0,.08);
-  font-size:12px;
-  color: var(--muted);
-  background: #fff;
+/* Chips */
+.pill{
+  display:inline-block; margin: 6px; padding: 6px 10px; border-radius: 999px;
+  border:1px solid rgba(0,0,0,.08); font-size:12px; color: var(--muted); background:#fff;
 }
