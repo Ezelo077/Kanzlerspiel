@@ -1,9 +1,12 @@
 const DECK = [
-  { id: 1, prompt: "Bauern fordern Subventionen für die Schweinezucht", left: { label: "Sie bekommen das Geld", consequence: "Bauern werden Fett und faul. Cholesterinrate steigt im Land" }, right: { label: "Sie bekommen kein Geld", consequence: "Bauern und Schweine streiken. Veganer Partei gewinnt nächste Wahl" }, meta: "Finanzen" },
-  { id: 2, prompt: "Polizei fordert doppelt so viel Geld, um Bevölkerung besser zu kontrolieren", left: { label: "Finanzieren", consequence: "Land ist sicherer, aber niemand traut sich mehr aus dem Haus, aus Angst vor Polizeigewalt" }, right: { label: "Nicht Finanzieren", consequence: "Menschen trauen sich nachwievor raus, jedoch ist die Verbrechensrate noch hoch" }, meta: "Sicherheit" },
-  { id: 3, prompt: "Wissenschaftler wollen Klone für die Arbeit züchten", left: { label: "Zustimmen", consequence: "Wirtschaft boomt, jedoch weiß keiner wer das Original ist" }, right: { label: "Ablehnen", consequence: "Forschung geht ins Ausland. Plötzlich doppelt so viele Nachbern." }, meta: "Forschung" },
-  { id: 4, prompt: "Alle Socialmedia Nachrichten sollen Überwacht werden", left: { label: "Zulassen", consequence: "Bürger haben Angst ihre Meinung zu äußern. Zufriedenheit sinkt" }, right: { label: "Ablehnen", consequence: "Menschen können frei Chatten, Inhalte im Netz weiterhin ungefiltert" }, meta: "Soziales" },
-  { id: 5, prompt: "Schüler fordern Kostenlosen Nahverkehr zur Schule", left: { label: "Finanzieren", consequence: "Budget sinkt, jedoch gehen mehr Schüler zur Schule, einer davon wird in Zukunft Krebs heilen" }, right: { label: "Ablehnen", consequence: "Weniger Schüler gehen zur Schule. Kriminalitätsrate steigt" }, meta: "Sozial" }
+  { id: 1, prompt: "Bauern fordern Subventionen für die Schweinezucht", left: { label: "Sie bekommen das Geld", consequence: "Bauern werden Fett und faul. Cholesterinrate steigt im Land." }, right: { label: "Sie bekommen kein Geld", consequence: "Bauern und Schweine streiken. Veganer Partei gewinnt nächste Wahl." }, meta: "Finanzen" },
+  { id: 2, prompt: "Polizei fordert doppelt so viel Geld, um Bevölkerung besser zu kontrolieren", left: { label: "Finanzieren", consequence: "Land ist sicherer, aber niemand traut sich mehr aus dem Haus, aus Angst vor Polizeigewalt." }, right: { label: "Nicht Finanzieren", consequence: "Menschen trauen sich nachwievor raus, jedoch ist die Verbrechensrate noch hoch." }, meta: "Sicherheit" },
+  { id: 3, prompt: "Wissenschaftler wollen Klone für die Arbeit züchten", left: { label: "Zustimmen", consequence: "Wirtschaft boomt, jedoch weiß keiner wer das Original ist." }, right: { label: "Ablehnen", consequence: "Forschung geht ins Ausland. Plötzlich doppelt so viele Nachbern." }, meta: "Forschung" },
+  { id: 4, prompt: "Alle Socialmedia Nachrichten sollen Überwacht werden", left: { label: "Zulassen", consequence: "Bürger haben Angst ihre Meinung zu äußern. Zufriedenheit sinkt." }, right: { label: "Ablehnen", consequence: "Menschen können frei Chatten, Inhalte im Netz weiterhin ungefiltert." }, meta: "Soziales" },
+  { id: 5, prompt: "Schüler fordern Kostenlosen Nahverkehr zur Schule", left: { label: "Finanzieren", consequence: "Budget sinkt, jedoch gehen mehr Schüler zur Schule, einer davon wird in Zukunft Krebs heilen." }, right: { label: "Ablehnen", consequence: "Weniger Schüler gehen zur Schule. Kriminalitätsrate steigt." }, meta: "Persönlich" },
+  { id: 6, prompt: "Gesetztesvorschlag TikTok Verbot, um jugendliche zu schützen.", left: { label: "Zustimmen", consequence: "Durchschnitts IQ steigt, jedoch sind Tausende 12. Jährige demonstrieren" }, right: {label: "Ablehnen", consequence: "Durchschnitts IQ nimmt weiter ab, jedoch war Bevölkerung nie so glücklich."}, meta: "Bildung"},
+
+
 ];
 
 const state = { index: 0, history: [] };
@@ -27,15 +30,23 @@ function renderBoard() {
   const board = $('#board');
   board.innerHTML = '';
 
+  // --- Endscreen: Konsequenzen ohne Nummerierung ---
   if (state.index >= DECK.length) {
     const wrap = create('div', 'card');
     wrap.style.display = 'grid';
     wrap.style.placeItems = 'center';
     const end = create('div', 'end');
+
+    const items = state.history
+      .map(h => `<li>${h.consequence}</li>`)
+      .join('');
+
     end.innerHTML = `
       <h2>Fertig.</h2>
-      <p>Deine Entscheidungen in Kurzform:</p>
-      <div>${state.history.map(h => `<span class="pill">#${h.id}: ${h.label}</span>`).join('')}</div>
+      <p>Deine Konsequenzen:</p>
+      <ul style="text-align:left; max-width:560px; margin: 0 auto 16px; padding-left: 20px; list-style-type: none;">
+        ${items}
+      </ul>
       <button class="btn" onclick="restart()">Nochmal spielen</button>
     `;
     wrap.appendChild(end);
