@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Entweder-Oder – Swipe Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <div class="title">Entweder-Oder</div>
+        <div class="subtitle">Wische nach links/rechts oder nutze die Buttons. Danach siehst du die Konsequenz.</div>
+      </div>
+      <div style="text-align:right">
+        <div class="subtitle">Fortschritt</div>
+        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+      </div>
+    </header>
+
+    <div class="board" id="board" aria-live="polite"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="assertive"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
