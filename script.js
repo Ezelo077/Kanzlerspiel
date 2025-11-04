@@ -62,11 +62,11 @@ function showToast(msg){
 
 function ratingLabel(score, max){
   const ratio = score / max; // -1..+1
-  if (ratio >= 0.6) return "Stark positiv";
-  if (ratio >= 0.2) return "Eher positiv";
-  if (ratio > -0.2) return "Ausgeglichen";
-  if (ratio > -0.6) return "Eher negativ";
-  return "Stark negativ";
+  if (ratio >= 0.6) return "Hitler wäre Stolz";
+  if (ratio >= 0.2) return "Diktator in den Startschuhen";
+  if (ratio > -0.2) return "Möchtegern Diktator";
+  if (ratio > -0.6) return "Fast schon Demokratisch";
+  return "Sehr Demokratisch";
 }
 
 function renderBoard(){
@@ -212,3 +212,4 @@ function restart(){
 }
 
 renderBoard();
+
