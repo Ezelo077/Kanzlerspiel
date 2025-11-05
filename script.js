@@ -326,41 +326,69 @@ function renderBoard() {
   const board = $('#board');
   board.innerHTML = '';
 
-  // Sieg nach 5 zufälligen Fragen
+  // --- Gewonnen / Spielende nach 5 zufälligen Fragen ---
   if (state.index >= state.playDeck.length) {
     const wrap = create('div', 'card');
     wrap.style.display = 'grid';
     wrap.style.placeItems = 'center';
     const end = create('div', 'end');
+
+    // Kategorien-Endstand
     const scoreList = Object.entries(state.scores)
-      .map(([k,v]) => `<div><strong>${k}:</strong> ${v}</div>`).join('');
+      .map(([k,v]) => `<div><strong>${k}:</strong> ${v}</div>`)
+      .join('');
+
+    // Alle Konsequenzen aus dem Spielverlauf
+    const historyList = state.history
+      .map(h =>
+        `<li style="margin-bottom:6px;">
+           <strong>Frage ${h.id}:</strong> ${h.consequence}
+           <br><span style="opacity:.6;">(${Object.entries(h.effects)
+             .map(([cat,val]) => `${cat}: ${val > 0 ? '+'+val : val}`)
+             .join(', ')})</span>
+         </li>`
+      )
+      .join('');
+
     end.innerHTML = `
       <h2>Gewonnen!</h2>
       <p>Du hast alle ${state.playDeck.length} Fragen beantwortet.</p>
-      <p>Endstand:</p>
+      <p><strong>Endstand:</strong></p>
       <div>${scoreList}</div>
+      <p style="margin-top:12px;"><strong>Deine Entscheidungen und ihre Folgen:</strong></p>
+      <ul style="text-align:left; max-width:560px; margin:0 auto 16px; padding-left:20px; list-style:none;">
+        ${historyList}
+      </ul>
       <button class="btn" onclick="restart()">Nochmal spielen</button>
     `;
+
     wrap.appendChild(end);
     board.appendChild(wrap);
     $('#bar').style.width = '100%';
     return;
   }
 
+  // --- Nächste Karte anzeigen ---
   const cardData = state.playDeck[state.index];
   const card = create('article', 'card above');
-  const badgeL = create('div', 'badge left');  badgeL.textContent  = cardData.left.label;
-  const badgeR = create('div', 'badge right'); badgeR.textContent = cardData.right.label;
+  const badgeL = create('div', 'badge left');
+  badgeL.textContent = cardData.left.label;
+  const badgeR = create('div', 'badge right');
+  badgeR.textContent = cardData.right.label;
   card.append(badgeL, badgeR);
 
-  const meta = create('div', 'meta'); meta.textContent = cardData.meta || '';
-  const prompt = create('div', 'prompt'); prompt.textContent = cardData.prompt;
+  const meta = create('div', 'meta');
+  meta.textContent = cardData.meta || '';
+  const prompt = create('div', 'prompt');
+  prompt.textContent = cardData.prompt;
   const spacer = create('div');
   const choices = create('div', 'choices');
 
-  const btnLeft  = create('button', 'btn btn-left');  btnLeft.textContent  = `← ${cardData.left.label}`;
-  const btnRight = create('button', 'btn btn-right'); btnRight.textContent = `${cardData.right.label} →`;
-  btnLeft.addEventListener('click',  () => decide('left',  cardData));
+  const btnLeft = create('button', 'btn btn-left');
+  btnLeft.textContent = `← ${cardData.left.label}`;
+  const btnRight = create('button', 'btn btn-right');
+  btnRight.textContent = `${cardData.right.label} →`;
+  btnLeft.addEventListener('click', () => decide('left', cardData));
   btnRight.addEventListener('click', () => decide('right', cardData));
   choices.append(btnLeft, btnRight);
 
@@ -369,6 +397,7 @@ function renderBoard() {
   updateProgress();
   updateBars();
 }
+
 
 function decide(side, data) {
   const pick = data[side];
