@@ -1,6 +1,7 @@
 // 4 Kategorien, Startwert je 5 Punkte, Limit 0–10
 const CATEGORIES = ["Bildung", "Sicherheit", "Zufriedenheit", "Finanzen"];
 
+// --- Dein volles MASTER-DECK (15 Fragen) ---
 const DECK = [
   {
     id: 1,
@@ -9,12 +10,12 @@ const DECK = [
     left:  {
       label: "Sie bekommen das Geld",
       consequence: "Bauern werden fett und faul. Cholesterinrate steigt im Land.",
-      effects: { Finanzen: -2, Zufriedenheit: +1 }
+      effects: { Finanzen: -3, Zufriedenheit: +2, Bildung: -1 }
     },
     right: {
       label: "Sie bekommen kein Geld",
       consequence: "Bauern und Schweine streiken. Veganer Partei gewinnt nächste Wahl.",
-      effects: { Finanzen: +1, Zufriedenheit: -1 }
+      effects: { Finanzen: +1, Zufriedenheit: -2 }
     }
   },
   {
@@ -24,12 +25,12 @@ const DECK = [
     left:  {
       label: "Finanzieren",
       consequence: "Land ist sicherer, aber niemand traut sich mehr aus dem Haus.",
-      effects: { Sicherheit: +2, Zufriedenheit:-1, Finanzen: -1 }
+      effects: { Sicherheit: +3, Zufriedenheit:-2, Finanzen: -1 }
     },
     right: {
       label: "Nicht Finanzieren",
       consequence: "Menschen trauen sich weiterhin raus, Verbrechensrate bleibt hoch.",
-      effects: { Sicherheit: -1, Zufriedenheit: +2 }
+      effects: { Sicherheit: -1, Zufriedenheit: +3 }
     }
   },
   {
@@ -39,12 +40,12 @@ const DECK = [
     left:  {
       label: "Zustimmen",
       consequence: "Wirtschaft boomt, jedoch weiß keiner, wer das Original ist.",
-      effects: { Finanzen: +2, Bildung: +1, Zufriedenheit: -1, Sicherheit: -1 }
+      effects: { Finanzen: +3, Bildung: +1, Zufriedenheit: -1, Sicherheit: -2 }
     },
     right: {
       label: "Ablehnen",
       consequence: "Forschung wandert ab. Weniger Wachstum, weniger ethische Konflikte.",
-      effects: { Finanzen: -1, Zufriedenheit: +2 }
+      effects: { Finanzen: -1, Zufriedenheit: +2, Bildung: -1 }
     }
   },
   {
@@ -54,12 +55,12 @@ const DECK = [
     left:  {
       label: "Zulassen",
       consequence: "Bürger haben Angst, ihre Meinung zu äußern.",
-      effects: { Sicherheit: +1, Zufriedenheit: -2 }
+      effects: { Sicherheit: +2, Zufriedenheit: -3 }
     },
     right: {
       label: "Ablehnen",
       consequence: "Freie Chats; Inhalte bleiben ungefiltert.",
-      effects: { Sicherheit: -1, Zufriedenheit: +2 }
+      effects: { Sicherheit: -1, Zufriedenheit: +3 }
     }
   },
   {
@@ -69,58 +70,180 @@ const DECK = [
     left:  {
       label: "Finanzieren",
       consequence: "Budget sinkt, mehr Schüler in der Schule; einer heilt später Krebs.",
-      effects: { Bildung: +2, Zufriedenheit: +1, Finanzen: -1 }
+      effects: { Bildung: +3, Zufriedenheit: +2, Finanzen: -3 }
     },
     right: {
       label: "Ablehnen",
       consequence: "Weniger Schüler in der Schule. Kriminalitätsrate steigt.",
-      effects: { Bildung: -2, Zufriedenheit: -1, Finanzen: +1 }
+      effects: { Bildung: -3, Zufriedenheit: -2, Finanzen: +1 }
     }
   },
-  {id: 6,
-   prompt: "Maultaschen sollen verboten werden, um Fleischverbrauch zu reduzieren",
-   meta: "Zufriedenheit",
-   left: {
-    label: "Zulassen",
-    consequence: "Bevölkerung ist empört. Illegale Maultaschenringe entstehen.",
-    effects: { Sicherheit: -1, Zufriedenheit: -1, Finanzen: +1  }
-   },
-   right: {
+  {
+    id: 6,
+    prompt: "Maultaschen sollen verboten werden, um Fleischverbrauch zu reduzieren",
+    meta: "Zufriedenheit",
+    left: {
+      label: "Zulassen",
+      consequence: "Bevölkerung ist empört. Illegale Maultaschenringe entstehen.",
+      effects: { Sicherheit: -2, Zufriedenheit: -1, Finanzen: +1  }
+    },
+    right: {
       label: "Ablehnen",
       consequence: "Maultaschen Industrie boomt. Veganer sind empört",
-      effects: { Finanzen: +1, Zufriedenheit: +2 }
+      effects: { Finanzen: +2, Zufriedenheit: +2, Bildung: -1 }
     }
   },
   {
     id: 7,
     prompt: "Schwarzwald soll im großen Stil abgeholzt werden, um neue Ferienorte zu schaffen",
-   left: {
-    label: "Zulassen",
-    consequence: "Tourismus wächst, jedoch wird die Luftqualität deutlich schlechter",
-    effects: {  Zufriedenheit: -1, Finanzen: +2  }
-   },
-   right: {
+    left: {
+      label: "Zulassen",
+      consequence: "Tourismus wächst, jedoch wird die Luftqualität deutlich schlechter",
+      effects: {  Zufriedenheit: -2, Finanzen: +3  }
+    },
+    right: {
       label: "Ablehnen",
       consequence: "Natur bleibt erhalten, jedoch gehen viele Potentielle Arbeitsplätze verloren",
-      effects: { Finanzen: -1, Zufriedenheit: +2 }
+      effects: { Finanzen: -2, Zufriedenheit: +2 }
+    }
+  },
+  {
+    id: 8,
+    prompt: "Einfürung einer ,,Brezel`` Steuer, zur Finanzierung der Straßen",
+    left: {
+      label: "Zulassen",
+      consequence: "Straßen werden saniert, jedoch ist der Zorn der Bäcker grenzenlos. Der Preis der Brezel steigt auf 5€",
+      effects: { Zufriedenheit: -1, Finanzen: +2  }
+    },
+    right: {
+      label: "Ablehnen",
+      consequence: "Die Straßen sind weiterhin kaputt, jedoch können die Bürger in Ruhe ihre Brezeln frühstücken",
+      effects: { Sicherheit: -1, Zufriedenheit: +2 }
+    }
+  },
+  {
+    id: 9,
+    prompt: "Ausbau des Stuttgarter Flughafens mitten in ein Naturschutzgebiet.",
+    left: {
+      label: "Zulassen",
+      consequence: "Wirtschaft profitiert, jedoch sterben seltene Tierarten aus. Demonstranten gehen auf die Straße",
+      effects: { Zufriedenheit: -1, Finanzen: +2, Bildung: -2 }
+    },
+    right: {
+      label: "Ablehnen",
+      consequence: "Umwelt bleibt Intakt.",
+      effects: { Zufriedenheit: +1, Bildung: +1 }
+    }
+  },
+  {
+    id: 10,
+    prompt: "Der Bodensee soll teilweise privatisiert werden",
+    left: {
+      label: "Zulassen",
+      consequence: "Luxushotels krallen sich die Grundstücke. Bodensee darf nur noch gegen Gebühr betreten werden",
+      effects: { Zufriedenheit: -2, Finanzen: +2  }
+    },
+    right: {
+      label: "Ablehnen",
+      consequence: "Ufer bleiben öffentlich, jedoch gehen eine Menge einnahmen verloren",
+      effects: { Finanzen: -2, Zufriedenheit: +2}
+    }
+  },
+  {
+    id: 11,
+    prompt: "Die Kuckucksuhr soll als Nationales Kulturerbe gefördert werden",
+    left: {
+      label: "Fördern",
+      consequence: "Traditionen leben auf, jedoch leidet das Budget an der ,,Uhren offensive``",
+      effects: { Zufriedenheit: +2, Finanzen: -1, Bildung: +1  }
+    },
+    right: {
+      label: "Nicht fördern",
+      consequence: "Alte Handwerksbetriebe sterben aus. Bevölkerung ist enttäuscht",
+      effects: { Zufriedenheit: -1, Finanzen: -1 }
+    }
+  },
+  {
+    id: 12,
+    prompt: "Der Bahnhof in Stuttgart soll weiter vergrößert werden",
+    left: {
+      label: "Vergrößern",
+      consequence: "Baustelle wird endlich fertig-2038. Bürger sind wütend.",
+      effects: { Zufriedenheit: -2, Finanzen: -1  }
+    },
+    right: {
+      label: "Nicht Vergrößern",
+      consequence: "Es herrscht weiterhin absolutes Chaos.",
+      effects: { Finanzen: -1, Zufriedenheit: -1 }
+    }
+  },
+  {
+    id: 13,
+    prompt: "Einführung einer Pflicht zum Tragen von Trachten an Feiertagen",
+    left: {
+      label: "Zulassen",
+      consequence: "Heimatsgefühl wächst, aber Individualisten und Jugendliche rebelieren ",
+      effects: { Zufriedenheit: -1, Finanzen: +1, Bildung: -1  }
+    },
+    right: {
+      label: "Ablehnen",
+      consequence: "Modefreiheit bleibt, aber Touristen beschweren sich über den fehlenden ,,Flair``",
+      effects: { Finanzen: -1, Zufriedenheit: +1, Bildung: +1}
+    }
+  },
+  {
+    id: 14,
+    prompt: "Einführung eines ,,Dialekt-Pflichtfaches`` in Schulen",
+    left: {
+      label: "Einführen",
+      consequence: "Kinder reden wieder schwäbisch D`Kender schwätzad etz wieder Schwäbisch. D`Lehrer send am Verzweifla bei de Grammatikaufgab",
+      effects: { Zufriedenheit: -1, Bildung: -2  }
+    },
+    right: {
+      label: "Nicht Einführen",
+      consequence: "Hochdeutsch setzt sich durch und Dialekte sterben aus",
+      effects: { Zufriedenheit: -1, Bildung: +2}
+    }
+  },
+  {
+    id: 15,
+    prompt: "Freibäder sollen Verboten werden um Wasser zu sparen und potentielle Unfälle zu vermeiden.",
+    left: {
+      label: "Verbieten",
+      consequence: "Die Bevölkerung hat angefangen ihre eigenen Pools zu bauen, wodurch es zu vielen verletzten gekommen ist",
+      effects: { Zufriedenheit: -1, Bildung: +1, Finanzen: -1, Sicherheit: -1  }
+    },
+    right: {
+      label: "Nicht Verbieten",
+      consequence: "Die Nachfrage nach Schwimmbädern schoss in die Decke. Noch nie wurden so viele Rettungsschwimmer benötigt",
+      effects: { Zufriedenheit: +1, Finanzen: +1, Sicherheit: +1 }
     }
   }
-
-
-  
 ];
+
+// --- Hilfsfunktion: n zufällige, eindeutige Karten ziehen ---
+function sampleDeck(base, n) {
+  const arr = base.slice();
+  // Fisher-Yates Shuffle
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.slice(0, n);
+}
 
 const state = {
   index: 0,
   history: [],
-  scores: { Bildung: 5, Sicherheit: 5, Zufriedenheit: 5, Finanzen: 5 }
+  scores: { Bildung: 5, Sicherheit: 5, Zufriedenheit: 5, Finanzen: 5 },
+  playDeck: sampleDeck(DECK, 5) // <— 5 zufällige Fragen pro Run
 };
 
 const $ = (sel, el=document) => el.querySelector(sel);
 const create = (tag, cls) => { const n = document.createElement(tag); if (cls) n.className = cls; return n; };
 
 function updateProgress() {
-  const p = Math.round((state.index / DECK.length) * 100);
+  const p = Math.round((state.index / state.playDeck.length) * 100);
   $('#bar').style.width = p + '%';
 }
 
@@ -156,15 +279,14 @@ const GAME_OVER_MESSAGES = {
     high: "Du wurdest zu gierig. Du startest einen Krieg mit dem Nachbarland, verlierst jedoch."
   },
   Zufriedenheit: {
-    low:  "Die Leute waren unzufrieden mit dir. Du wirst von deinen engsten Beratern im schlaf erschossen",
-    high: "Die Menschen sind fett und faul geworden. Keiner macht mehr seinen Job was der Elite gar nicht gefällt. Du wirst im schlaf erschossen."
+    low:  "Die Leute waren unzufrieden mit dir. Du wirst von deinen engsten Beratern im Schlaf erschossen",
+    high: "Die Menschen sind fett und faul geworden. Keiner macht mehr seinen Job was der Elite gar nicht gefällt. Du wirst im Schlaf erschossen."
   },
   Finanzen: {
     low:  "Krankenhäuser brechen zusammen. Alle werden Krank und sterben über lange Zeit an ihren Qualen.",
-    high: "Das ganze Geld hat dich überaus Korrupt gemacht. Für den richtigen Betrag würdest du alles tun. Deine Bevölkerung wird unrhuig und lehnt sich gegen dich auf. "
+    high: "Das ganze Geld hat dich überaus korrupt gemacht. Für den richtigen Betrag würdest du alles tun. Deine Bevölkerung wird unrhuig und lehnt sich gegen dich auf. "
   }
 };
-
 
 function showGameOver(cat, reason) {
   const board = $('#board');
@@ -175,7 +297,6 @@ function showGameOver(cat, reason) {
   wrap.style.placeItems = 'center';
   const end = create('div', 'end');
 
-  // Wähle passenden Text
   const msgSet = GAME_OVER_MESSAGES[cat];
   let msg = '';
   if (msgSet) {
@@ -194,7 +315,6 @@ function showGameOver(cat, reason) {
   board.appendChild(wrap);
 }
 
-
 function showToast(msg) {
   const t = $('#toast');
   t.textContent = msg; t.classList.add('show');
@@ -206,7 +326,8 @@ function renderBoard() {
   const board = $('#board');
   board.innerHTML = '';
 
-  if (state.index >= DECK.length) {
+  // Sieg nach 5 zufälligen Fragen
+  if (state.index >= state.playDeck.length) {
     const wrap = create('div', 'card');
     wrap.style.display = 'grid';
     wrap.style.placeItems = 'center';
@@ -214,7 +335,8 @@ function renderBoard() {
     const scoreList = Object.entries(state.scores)
       .map(([k,v]) => `<div><strong>${k}:</strong> ${v}</div>`).join('');
     end.innerHTML = `
-      <h2>Fertig.</h2>
+      <h2>Gewonnen!</h2>
+      <p>Du hast alle ${state.playDeck.length} Fragen beantwortet.</p>
       <p>Endstand:</p>
       <div>${scoreList}</div>
       <button class="btn" onclick="restart()">Nochmal spielen</button>
@@ -225,13 +347,13 @@ function renderBoard() {
     return;
   }
 
-  const cardData = DECK[state.index];
+  const cardData = state.playDeck[state.index];
   const card = create('article', 'card above');
   const badgeL = create('div', 'badge left');  badgeL.textContent  = cardData.left.label;
   const badgeR = create('div', 'badge right'); badgeR.textContent = cardData.right.label;
   card.append(badgeL, badgeR);
 
-  const meta = create('div', 'meta'); meta.textContent = cardData.meta;
+  const meta = create('div', 'meta'); meta.textContent = cardData.meta || '';
   const prompt = create('div', 'prompt'); prompt.textContent = cardData.prompt;
   const spacer = create('div');
   const choices = create('div', 'choices');
@@ -268,6 +390,7 @@ function restart() {
   state.index = 0;
   state.history = [];
   state.scores = { Bildung: 5, Sicherheit: 5, Zufriedenheit: 5, Finanzen: 5 };
+  state.playDeck = sampleDeck(DECK, 5); // neue 5 zufällige Fragen
   renderBoard();
 }
 
