@@ -189,3 +189,33 @@ header { display:flex; align-items:center; justify-content:space-between; margin
   z-index: 2;
   mix-blend-mode: difference;
 }
+.card {
+  position: relative;
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  overflow: hidden; /* verhindert Überlauf nach außen */
+}
+
+/* Für den Endscreen mit langem Text */
+.card .end {
+  max-height: 70vh;            /* beschränkt Höhe auf 70% der Bildschirmhöhe */
+  overflow-y: auto;            /* ermöglicht Scrollen innerhalb der Karte */
+  padding-right: 0.5rem;       /* etwas Platz, damit Scrollbar Text nicht verdeckt */
+  scrollbar-width: thin;       /* schlanke Scrollbar (Firefox) */
+}
+
+/* Optional für schönere Scrollbar (Webkit, also Chrome/Safari/Edge) */
+.card .end::-webkit-scrollbar {
+  width: 6px;
+}
+.card .end::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+}
+.card .end::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.5);
+}
