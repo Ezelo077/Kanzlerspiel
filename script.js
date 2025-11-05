@@ -10,7 +10,7 @@ const DECK = [
     left:  {
       label: "Sie bekommen das Geld",
       consequence: "Bauern werden fett und faul. Cholesterinrate steigt im Land.",
-      effects: { Finanzen: -3, Zufriedenheit: +2, Bildung: -1 }
+      effects: { Finanzen: -2, Zufriedenheit: +2, Bildung: -1 }
     },
     right: {
       label: "Sie bekommen kein Geld",
@@ -25,12 +25,12 @@ const DECK = [
     left:  {
       label: "Finanzieren",
       consequence: "Land ist sicherer, aber niemand traut sich mehr aus dem Haus.",
-      effects: { Sicherheit: +3, Zufriedenheit:-2, Finanzen: -1 }
+      effects: { Sicherheit: +2, Zufriedenheit:-2, Finanzen: -1 }
     },
     right: {
       label: "Nicht Finanzieren",
       consequence: "Menschen trauen sich weiterhin raus, Verbrechensrate bleibt hoch.",
-      effects: { Sicherheit: -1, Zufriedenheit: +3 }
+      effects: { Sicherheit: -1, Zufriedenheit: +2 }
     }
   },
   {
@@ -40,7 +40,7 @@ const DECK = [
     left:  {
       label: "Zustimmen",
       consequence: "Wirtschaft boomt, jedoch weiß keiner, wer das Original ist.",
-      effects: { Finanzen: +3, Bildung: +1, Zufriedenheit: -1, Sicherheit: -2 }
+      effects: { Finanzen: +2, Bildung: +1, Zufriedenheit: -1, Sicherheit: -2 }
     },
     right: {
       label: "Ablehnen",
@@ -55,12 +55,12 @@ const DECK = [
     left:  {
       label: "Zulassen",
       consequence: "Bürger haben Angst, ihre Meinung zu äußern.",
-      effects: { Sicherheit: +2, Zufriedenheit: -3 }
+      effects: { Sicherheit: +2, Zufriedenheit: -2 }
     },
     right: {
       label: "Ablehnen",
       consequence: "Freie Chats; Inhalte bleiben ungefiltert.",
-      effects: { Sicherheit: -1, Zufriedenheit: +3 }
+      effects: { Sicherheit: -1, Zufriedenheit: +2 }
     }
   },
   {
@@ -70,12 +70,12 @@ const DECK = [
     left:  {
       label: "Finanzieren",
       consequence: "Budget sinkt, mehr Schüler in der Schule; einer heilt später Krebs.",
-      effects: { Bildung: +3, Zufriedenheit: +2, Finanzen: -3 }
+      effects: { Bildung: +2, Zufriedenheit: +1, Finanzen: -2 }
     },
     right: {
       label: "Ablehnen",
       consequence: "Weniger Schüler in der Schule. Kriminalitätsrate steigt.",
-      effects: { Bildung: -3, Zufriedenheit: -2, Finanzen: +1 }
+      effects: { Bildung: -2, Zufriedenheit: -2, Finanzen: +1 }
     }
   },
   {
@@ -99,7 +99,7 @@ const DECK = [
     left: {
       label: "Zulassen",
       consequence: "Tourismus wächst, jedoch wird die Luftqualität deutlich schlechter",
-      effects: {  Zufriedenheit: -2, Finanzen: +3  }
+      effects: {  Zufriedenheit: -2, Finanzen: +2  }
     },
     right: {
       label: "Ablehnen",
