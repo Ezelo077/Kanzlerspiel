@@ -1,43 +1,63 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Das Diktatorspiel</title>
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
+
+  <!-- SCOREBOARD GANZ OBEN -->
+  <div class="scoreboard">
+    <div class="bar-wrapper">
+      <div class="bar-segment" id="bar-Bildung">
+        <img src="icons/buch.jpg" alt="Bildung">
+      </div>
+    </div>
+
+    <div class="bar-wrapper">
+      <div class="bar-segment" id="bar-Sicherheit">
+        <img src="icons/schild.jpg" alt="Sicherheit">
+      </div>
+    </div>
+
+    <div class="bar-wrapper">
+      <div class="bar-segment" id="bar-Zufriedenheit">
+        <img src="icons/daumen.jpg" alt="Zufriedenheit">
+      </div>
+    </div>
+
+    <div class="bar-wrapper">
+      <div class="bar-segment" id="bar-Finanzen">
+        <img src="icons/geldschein.jpg" alt="Finanzen">
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- HAUPTAPP -->
   <div class="app">
+
     <header>
       <div>
-        <div class="title">Wie Böse bist du?</div>
-        <div class="subtitle">Beantworte die Fragen, wie es ein guter Diktator tun würde</div>
+        <div class="title">Wie böse bist du?</div>
+        <div class="subtitle">Beantworte die Fragen wie ein guter Diktator</div>
       </div>
-      <div style="text-align:right">
+
+      <div style="text-align:right;">
         <div class="subtitle">Fortschritt</div>
-        <div class="progress" aria-hidden="true"><div class="bar" id="bar"></div></div>
+        <div class="progress"><div class="bar" id="bar"></div></div>
       </div>
     </header>
 
     <div class="board" id="board" aria-live="polite"></div>
+
   </div>
-<div class="scoreboard">
-  <div class="bar-wrapper">
-    <div class="bar-segment" id="bar-Bildung"><span>Bildung</span></div>
-  </div>
-  <div class="bar-wrapper">
-    <div class="bar-segment" id="bar-Sicherheit"><span>Sicherheit</span></div>
-  </div>
-  <div class="bar-wrapper">
-    <div class="bar-segment" id="bar-Zufriedenheit"><span>Zufriedenheit</span></div>
-  </div>
-  <div class="bar-wrapper">
-    <div class="bar-segment" id="bar-Finanzen"><span>Finanzen</span></div>
-  </div>
-</div>
 
   <div class="toast" id="toast" role="status" aria-live="assertive"></div>
 
-  <script src="script.js?v=6"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>
